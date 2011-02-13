@@ -4,7 +4,8 @@
     然后就可以邮寄到free.kindle.com来下载啦
 
 用法：
-    %s  紫川.txt  罗浮.txt
+    (请保证 txt 文件与 txt2mobi.py 在同一个目录中）
+    $ python txt2mobi.py  紫川.txt  罗浮.txt
 
 依赖：
     jinja2
