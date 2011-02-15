@@ -67,18 +67,6 @@ def convert(file):
             continue
 
         # 猜测章节序号
-        m = re.match(u'.*第([^卷]*)章[ 　](.*)', line) # 等效与 #@section:
-        if m is not None:
-            tag = 'section'
-            val = m.group()
-            #print val
-            paras = []
-            if tag not in meta:
-                meta[tag] = []
-            meta[tag].append( (val, paras) )
-            continue
-
-        # 猜测章节序号
         m = re.match(u'.*第(.*)[卷章](.*) 第(.*)[章节](.*)', line)
         if m is not None:
             vals = m.groups()
@@ -93,6 +81,18 @@ def convert(file):
                 paras = []
                 section = {'name': section_name, 'paras': paras}
                 chapter['sections'].append(section)
+            continue
+
+        # 猜测章节序号
+        m = re.match(u'.*第([^卷]*)章[ 　](.*)', line) # 等效与 #@section:
+        if m is not None:
+            tag = 'section'
+            val = m.group()
+            #print val
+            paras = []
+            if tag not in meta:
+                meta[tag] = []
+            meta[tag].append( (val, paras) )
             continue
 
         paras.append(line)
