@@ -1,6 +1,8 @@
 #!/usr/bin/env python2
 #-*- coding: UTF-8 -*-
 
+import sys,os
+
 readme="""
 说明:
     将带有简单格式的TXT文件转换为带有目录、作者信息的mobi文件。
@@ -10,13 +12,15 @@ readme="""
     %s  紫川.txt  罗浮.txt
 """
 
+BASE_DIR = os.path.dirname( os.path.realpath( __file__ ) )
+
 def convert(file):
     from jinja2 import Template
     import os
     import re
     from datetime import datetime
     import time
-    print "%s => %s.html" % (file, file)
+    print "Dealing: %s" % file
     fin = open(file)
     mobi_file = file.replace('.txt', '') +".mobi"
 
@@ -63,6 +67,18 @@ def convert(file):
             continue
 
         # 猜测章节序号
+        m = re.match(u'.*第([^卷]*)章[ 　](.*)', line) # 等效与 #@section:
+        if m is not None:
+            tag = 'section'
+            val = m.group()
+            #print val
+            paras = []
+            if tag not in meta:
+                meta[tag] = []
+            meta[tag].append( (val, paras) )
+            continue
+
+        # 猜测章节序号
         m = re.match(u'.*第(.*)[卷章](.*) 第(.*)[章节](.*)', line)
         if m is not None:
             vals = m.groups()
@@ -84,19 +100,25 @@ def convert(file):
     fin.close()
     print "analyse done: %s. %d Chapters." % (file, len(meta['chapters']))
 
+    if len(meta['chapters']) == 0 and len(meta['section']) > 0:
+        print 'INFO: no chapters, using Article mode.'
+        meta['template'] = 'templates/article.html'
+        meta['template-ncx'] = 'templates/article.ncx'
+
     gen_files = {
             'template': 'book.html',
             'template-ncx': 'book.ncx',
             'template-opf': 'book.opf',
             }
+    from jinja2 import Environment, PackageLoader
     for tag,gen_file in gen_files.items():
-        print 'generating : %s' % gen_file
-        t = Template(open(meta[tag]).read().decode('utf-8'))
+        print 'generating : %s by %s' % (gen_file, meta[tag])
+        t = Template(open(BASE_DIR + "/" + meta[tag]).read().decode('utf-8'))
         open(gen_file, 'w').write(t.render(meta = meta).encode('utf-8'))
 
     import subprocess
     print 'Running "kindlegen" to build .mobi file:%s' % mobi_file
-    subprocess.call('kindlegen -unicode %s -o "%s"' % ('book.opf', mobi_file), shell=True)
+    subprocess.call(BASE_DIR + '/kindlegen -unicode %s -o "%s"' % ('book.opf', mobi_file), shell=True)
 
     if os.path.isfile(mobi_file) is False:
         print " !!!!!!!!!!!!!!!   %s failed  !!!!!!!!!!!!!!" % file

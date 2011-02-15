@@ -11,22 +11,8 @@
             .chapter{font-size: 1.5em; margin; 1em;}
             .section{font-size: 1.2em; margin-top: 1em;}
         </style>
-        <guide>
-            <reference type="start" title="Start Here" href="#start"></reference>
-            <reference type="toc" title="Table of Contents" href="#toc"></reference>
-            {% if 'cover' in meta %}<reference type="cover" title="Cover Image" href="#cover"></reference>{% endif %}
-        </guide>
     </head>
     <body>
-        {% if 'cover' in meta %}
-        <div id='cover'>
-            <center>
-                <img src='{{meta.cover}}'></img>
-            </center>
-        </div>
-        <mbp:pagebreak></mbp:pagebreak>
-        {% endif %}
-
         <div id="toc">
             <center><h2>目录</h2></center>
             <ul>{% for name, paras in meta.section %}
@@ -35,7 +21,7 @@
         </div><!-- end toc -->
         <mbp:pagebreak></mbp:pagebreak>
 
-        <div id="start">
+        <div id="welcome">
             <center>
                 <h1 class='title'>{{ meta.title }}</h1>
                 <p class='author' text-align='right'>{{ meta.author }} 著</p>
