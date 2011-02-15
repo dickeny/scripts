@@ -14,12 +14,18 @@ def convert(file):
     from jinja2 import Template
     import os
     import re
+    from datetime import datetime
+    import time
     print "%s => %s.html" % (file, file)
     fin = open(file)
-    html_file = file+".html"
+    mobi_file = file.replace('.txt', '') +".mobi"
 
     meta = {'title': '', 'author': '',
             'template': 'templates/book.html',
+            'template-ncx': 'templates/book.ncx',
+            'template-opf': 'templates/book.opf',
+            'isbn': int(time.mktime(datetime.now().timetuple())),
+            'date': datetime.now().strftime("%Y-%m-%d"),
             'conver': [], 'chapters': []}
     state = 'paragraph'
     paras = []
@@ -78,14 +84,19 @@ def convert(file):
     fin.close()
     print "analyse done: %s. %d Chapters." % (file, len(meta['chapters']))
 
-    print 'generating  HTML: %s' % html_file
-    t = Template(open(meta['template']).read().decode('utf-8'))
-    open(html_file, 'w').write(t.render(meta = meta).encode('utf-8'))
+    gen_files = {
+            'template': 'book.html',
+            'template-ncx': 'book.ncx',
+            'template-opf': 'book.opf',
+            }
+    for tag,gen_file in gen_files.items():
+        print 'generating : %s' % gen_file
+        t = Template(open(meta[tag]).read().decode('utf-8'))
+        open(gen_file, 'w').write(t.render(meta = meta).encode('utf-8'))
 
     import subprocess
-    mobi_file = file + '.mobi'
     print 'Running "kindlegen" to build .mobi file:%s' % mobi_file
-    subprocess.call('kindlegen -unicode %s -o "%s"' % (html_file, mobi_file), shell=True)
+    subprocess.call('kindlegen -unicode %s -o "%s"' % ('book.opf', mobi_file), shell=True)
 
     if os.path.isfile(mobi_file) is False:
         print " !!!!!!!!!!!!!!!   %s failed  !!!!!!!!!!!!!!" % file
