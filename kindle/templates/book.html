@@ -5,7 +5,6 @@
         <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
         <meta name="author" content="{{meta.author}}" />
         <meta name="generator" content="沈觅仁(dickeny@gmail.com)">
-        <meta name="description" content="{{meta.brief.0}}">
         <meta name="language" content="zh_CN"/>
         <style type="text/css">
             .title{font-size: 2em; margin-top: 1em; margin-bottom: 1em;}
@@ -13,24 +12,8 @@
             .chapter{font-size: 1.5em; margin; 1em;}
             .section{font-size: 1.2em; margin-top: 1em;}
         </style>
-        <guide>
-        <reference type="start" title="Start Here" href="#start"></reference>
-        <reference type="toc" title="Table of Contents" href="#toc"></reference>
-        <!--{% if 'cover' in meta %}<reference type="cover" title="Cover Image" href="#cover"></reference>{% endif %}-->
-        </guide>
     </head>
     <body>
-        <div id="start">
-            <center>
-                <h1 class='title'>{{ meta.title }}</h1>
-                <p class='author' text-align='right'>{{ meta.author }} 著</p>
-            </center>
-            <div id='brief'>{% for para in meta.brief %}
-                <p>{{ para }}</p>{% endfor %}
-            </div>
-        </div>
-        <mbp:pagebreak></mbp:pagebreak>
-
         {% if 'cover' in meta %}
         <div id='cover'>
             <center>
@@ -47,11 +30,22 @@
                 </center>
                 {% for chapter in meta.chapters %}
                 <h2><a href='#chapter-{{loop.index}}'>{{ chapter.name }}</a></h2>
-                <ol>{% set out_loop = loop %}{% for section in chapter.sections %}
+                <ul>{% set out_loop = loop %}{% for section in chapter.sections %}
                     <li><a href="#section-{{out_loop.index}}-{{loop.index}}">{{ section.name }}</a>{% endfor %}
-                </ol>{% endfor %}
+                </ul>{% endfor %}
             </div>
         </div><!-- end toc -->
+        <mbp:pagebreak></mbp:pagebreak>
+
+        <div id="welcome">
+            <center>
+                <h1 class='title'>{{ meta.title }}</h1>
+                <p class='author' text-align='right'>{{ meta.author }} 著</p>
+            </center>
+            <div id='brief'>{% for para in meta.brief %}
+                <p>{{ para }}</p>{% endfor %}
+            </div>
+        </div>
         <mbp:pagebreak></mbp:pagebreak>
 
         <div id="content">

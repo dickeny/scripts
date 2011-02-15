@@ -5,8 +5,6 @@
         <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
         <meta name="author" content="{{meta.author}}" />
         <meta name="generator" content="沈觅仁(dickeny@gmail.com)">
-        <meta name="description" content="{{meta.brief.0}}">
-        <meta name="language" content="zh_CN"/>
         <style type="text/css">
             .title{font-size: 2em; margin-top: 1em; margin-bottom: 1em;}
             .author{font-style: italic; text-align: right;}
@@ -14,9 +12,9 @@
             .section{font-size: 1.2em; margin-top: 1em;}
         </style>
         <guide>
-        <reference type="start" title="Start Here" href="#start"></reference>
-        <reference type="toc" title="Table of Contents" href="#toc"></reference>
-        {% if 'cover' in meta %}<reference type="cover" title="Cover Image" href="#cover"></reference>{% endif %}
+            <reference type="start" title="Start Here" href="#start"></reference>
+            <reference type="toc" title="Table of Contents" href="#toc"></reference>
+            {% if 'cover' in meta %}<reference type="cover" title="Cover Image" href="#cover"></reference>{% endif %}
         </guide>
     </head>
     <body>
@@ -30,13 +28,10 @@
         {% endif %}
 
         <div id="toc">
-            <div id="book">
-                <center><h2>目录</h2></center>
-                <ul>
-                    {% for name, paras in meta.section %}
-                    <li><a href="#section-{{loop.index}}">{{ name }}</a></li>{% endfor %}
-                </ul>
-            </div>
+            <center><h2>目录</h2></center>
+            <ul>{% for name, paras in meta.section %}
+                <li><a href="#section-{{loop.index}}">{{ name }}</a></li>{% endfor %}
+            </ul>
         </div><!-- end toc -->
         <mbp:pagebreak></mbp:pagebreak>
 
@@ -45,6 +40,7 @@
                 <h1 class='title'>{{ meta.title }}</h1>
                 <p class='author' text-align='right'>{{ meta.author }} 著</p>
             </center>
+            <br/>
             <div id='brief'>{% for para in meta.brief %}
                 <p>{{ para }}</p>{% endfor %}
             </div>

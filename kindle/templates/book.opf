@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://www.idpf.org/2007/opf" version="2.0" unique-identifier="BookId">
+    <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
+        <dc:title>Kindle User's Guide</dc:title>
+        <dc:language>zh-cn</dc:language>
+        <meta name="cover" content="My_Cover" />
+        <dc:identifier id="BookId" opf:scheme="ISBN">9781375890815</dc:identifier>
+        <dc:creator>沈觅仁</dc:creator>
+        <dc:publisher>互联网</dc:publisher>
+        <dc:subject>Reference</dc:subject>
+        <dc:date>2009-11-17</dc:date>
+        <dc:description>An overview of all the Amazon Kindle features and how to use them. 3rd Edition.</dc:description>
+    </metadata>
+
+<manifest>
+    <item id="toc" media-type="application/x-dtbncx+xml" href="KUG.ncx"/>
+    <item id="book" media-type="application/xhtml+xml" href="book.html"></item>
+    <item id="cover" media-type="image/jpeg" href="{{meta.cover}}"/>
+    <!--<item id="cover" media-type="image/gif" href="{{meta.cover}}"/>-->
+</manifest>
+<spine toc="toc">
+    <itemref idref="book"/>
+</spine>
+
+<guide>
+    <reference type="toc" title="目录" href="book.html#toc"></reference>
+    <reference type="text" title="扉页" href="book.html#welcome"></reference>
+</guide>
+
+</package>
